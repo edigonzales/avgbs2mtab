@@ -26,13 +26,23 @@ phases:
       - ./gradlew clean build -Dfile.encoding=UTF8
       - echo Build completed on `date`
       - echo Publishing to Artifactory
-      - ./gradlew shadowJar artifactoryPublish      
+      - ./gradlew shadowJar artifactoryPublish
+      # Now we make a new docker image for the avgbs2mtab-web-service
+      - echo Start building web service
+      - git clone https://github.com/sogis/avgbs2mtab-web-service avgbs2mtab-web-service
+      - chmod +rx -R *
+      - cd avgbs2mtab-web-service
+      - ./gradlew clean build
+      - APP_VERSION=$(./gradlew -q getVersion | tail -1)
+      - docker build -t sogis/avgbs2mtab-web-service:$APP_VERSION -t sogis/avgbs2mtab-web-service:latest .
   post_build:
     commands:
       - echo Build completed on `date`
-      #- echo Publishing to Artifactory
-      #- ./gradlew shadowJar artifactoryPublish
-
+      - echo Pushing the Docker image...
+      - docker push sogis/avgbs2mtab-web-service:$APP_VERSION
+      - docker push sogis/avgbs2mtab-web-service:latest
+      - echo Deleting Dockerfile
+      - rm Dockerfile
 artifacts:
   files:
     - '**/*'
