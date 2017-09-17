@@ -1,15 +1,6 @@
 version: 0.2
-
-env:
-  variables:
-    
                 
 phases:
-  install:
-    commands:
-
-  pre_build:
-    commands:
 
   build:
     commands:
@@ -19,6 +10,7 @@ phases:
 
   post_build:
     commands:
+      - echo Hallo Welt.
 
 artifacts:
   files:
