@@ -1,7 +1,21 @@
 version: 0.2
-                
-phases:
 
+env:
+  variables:
+    JAVA_HOME: "/usr/lib/jvm/java-8-openjdk-amd64"
+              
+phases:
+  install:
+    commands:
+      - apt-get update -y
+      - apt-get install -y software-properties-common
+      - add-apt-repository ppa:openjdk-r/ppa
+      - apt-get update -y
+      - apt-get install -y openjdk-8-jdk
+  pre_build:
+    commands:
+      - echo Logging in to Docker Hub...
+      - docker login -u $DOCKER_HUB_USERNAME -p $DOCKER_HUB_PASSWORD
   build:
     commands:
       - echo Build started on `date`
@@ -10,12 +24,14 @@ phases:
       # Build is sucessful but console output
       # is full of character mapping errors.
       - ./gradlew clean build -Dfile.encoding=UTF8
-
+      - echo Build completed on `date`
+      - echo Publishing to Artifactory
+      - ./gradlew shadowJar artifactoryPublish      
   post_build:
     commands:
       - echo Build completed on `date`
-      - echo Publishing to Artifactory
-      - ./gradlew shadowJar artifactoryPublish
+      #- echo Publishing to Artifactory
+      #- ./gradlew shadowJar artifactoryPublish
 
 artifacts:
   files:
