@@ -28,11 +28,16 @@ phases:
       - echo Publishing to Artifactory
       - ./gradlew shadowJar artifactoryPublish
       # Now we make a new docker image for the avgbs2mtab-web-service
+      # If we'd want to publish it on elastic beanstalk I don't know 
+      # how to deal with the Dockerrun.aws.json which is in the cloned
+      # web service directory. Just copy/move it into the root directory
+      # could work.
       - echo Start building web service
       - git clone https://github.com/sogis/avgbs2mtab-web-service avgbs2mtab-web-service
       - chmod +rx -R *
       - cd avgbs2mtab-web-service
       - ./gradlew clean build
+      # git-sha does not work if the docker image is build in a 'normal' codepipeline.
       - APP_VERSION=$(./gradlew -q getVersion | tail -1)
       - docker build -t sogis/avgbs2mtab-web-service:$APP_VERSION -t sogis/avgbs2mtab-web-service:latest .
   post_build:
