@@ -8,7 +8,7 @@ phases:
       - chmod +rx -R *
       # UTF8 is needed for AWS CodeBuild.
       # Build is sucessful but console output
-      # is full of character mapping errors. 
+      # is full of character mapping errors.
       - ./gradlew clean build -Dfile.encoding=UTF8
 
   post_build:
