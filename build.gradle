@@ -6,12 +6,12 @@ plugins {
 apply plugin: 'java'
 apply plugin: 'maven'
 apply plugin: 'maven-publish'
-apply plugin: "com.jfrog.artifactory"
-apply plugin: "com.github.johnrengelman.shadow"
+apply plugin: 'com.jfrog.artifactory'
+apply plugin: 'com.github.johnrengelman.shadow'
 //apply plugin: 'findbugs'
 
 group 'ch.so.agi.avgbs2mtab'
-version '0.9.6'
+version '0.9.7-SNAPSHOT'
 
 sourceCompatibility = 1.8
 
@@ -25,26 +25,23 @@ repositories {
     */
 }
 
-
 dependencies {
     testCompile group: 'junit', name: 'junit', version: '4.12'
-    /*
     compile group: 'commons-cli', name: 'commons-cli', version: '1.4'
     compile group: 'org.apache.poi', name: 'poi', version: '3.16'
     compile group: 'org.apache.poi', name: 'poi-ooxml', version: '3.16'
     compile group: 'org.apache.poi', name: 'poi-ooxml-schemas', version: '3.16'
-    */
 
-    compile files('./lib/commons-cli-1.4/commons-cli-1.4.jar',
-            './lib/poi-3.16/poi-3.16.jar',
-            './lib/poi-3.16/poi-ooxml-3.16.jar',
-            './lib/poi-3.16/poi-ooxml-schemas-3.16.jar',
-            './lib/poi-3.16/ooxml-lib/xmlbeans-2.6.0.jar',
-            './lib/poi-3.16/lib/commons-collections4-4.1.jar',
+    compile files(
+    			//'./lib/commons-cli-1.4/commons-cli-1.4.jar',
+            //'./lib/poi-3.16/poi-3.16.jar',
+            //'./lib/poi-3.16/poi-ooxml-3.16.jar',
+            //'./lib/poi-3.16/poi-ooxml-schemas-3.16.jar',
+            //'./lib/poi-3.16/ooxml-lib/xmlbeans-2.6.0.jar',
+            //'./lib/poi-3.16/lib/commons-collections4-4.1.jar',
             './lib/iox/iox.jar',
             './lib/iox/iox-api.jar')
 }
-
 
 // Initialize properties for artifactory upload.
 // Preventing gradle errors if gradle.properties is missing.
@@ -53,12 +50,13 @@ ext {
     setPropertyDefaultValue('artifactoryPassword', "password")
 }
 
+String repo = version.endsWith('SNAPSHOT') ? 'libs-snapshot-local' : 'libs-release-local'
+
 artifactory {
     contextUrl = "http://sogeo.services:8081/artifactory"
     publish {
         repository {
-            //repoKey = 'libs-snapshot-local'
-            repoKey = 'libs-release-local'
+            repoKey = repo
             username = "${artifactoryUser}"
             password = "${artifactoryPassword}"
             maven = true

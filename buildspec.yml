@@ -1,0 +1,25 @@
+version: 0.2
+
+env:
+  variables:
+    
+                
+phases:
+  install:
+    commands:
+
+  pre_build:
+    commands:
+
+  build:
+    commands:
+      - echo Build started on `date`
+      - chmod +rx -R *
+      - ./gradlew clean build
+
+  post_build:
+    commands:
+
+artifacts:
+  files:
+    - '**/*'
