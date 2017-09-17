@@ -10,7 +10,9 @@ phases:
 
   post_build:
     commands:
-      - echo Hallo Welt.
+      - echo Build completed on `date`
+      - echo Publishing to Artifactory
+      - ./gradlew shadowJar artifactoryPublish
 
 artifacts:
   files:

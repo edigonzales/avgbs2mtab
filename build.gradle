@@ -46,8 +46,11 @@ dependencies {
 // Initialize properties for artifactory upload.
 // Preventing gradle errors if gradle.properties is missing.
 ext {
-    setPropertyDefaultValue('artifactoryUser', "user")
-    setPropertyDefaultValue('artifactoryPassword', "password")
+	artifactoryUser = System.env.ARTIFACTORY_USER;
+	artifactoryPassword = System.env.ARTIFACTORY_PASSWORD;
+
+    //setPropertyDefaultValue('artifactoryUser', "user")
+    //setPropertyDefaultValue('artifactoryPassword', "password")
 }
 
 String repo = version.endsWith('SNAPSHOT') ? 'libs-snapshot-local' : 'libs-release-local'
