@@ -6,7 +6,7 @@ phases:
     commands:
       - echo Build started on `date`
       - chmod +rx -R *
-      - ./gradlew clean build
+      - ./gradlew clean build -Dfile.encoding=UTF8
 
   post_build:
     commands:
